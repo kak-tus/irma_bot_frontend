@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type { Group } from '../models/Group';
 import type { Healthcheck } from '../models/Healthcheck';
+import type { TokenData } from '../models/TokenData';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 
@@ -26,13 +27,58 @@ export class ServiceService {
      * @throws ApiError
      */
     public static getGroup({
-        id,
+        token,
     }: {
-        id: number,
+        token: string,
     }): CancelablePromise<Group> {
         return __request({
             method: 'GET',
-            path: `/group/${id}`,
+            path: `/group`,
+            query: {
+                'token': token,
+            },
+        });
+    }
+
+    /**
+     * Save group
+     * @returns any
+     * @throws ApiError
+     */
+    public static saveGroup({
+        token,
+        requestBody,
+    }: {
+        token: string,
+        requestBody: Group,
+    }): CancelablePromise<any> {
+        return __request({
+            method: 'POST',
+            path: `/group`,
+            query: {
+                'token': token,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Get token data
+     * @returns TokenData
+     * @throws ApiError
+     */
+    public static getTokenData({
+        token,
+    }: {
+        token: string,
+    }): CancelablePromise<TokenData> {
+        return __request({
+            method: 'GET',
+            path: `/token`,
+            query: {
+                'token': token,
+            },
         });
     }
 

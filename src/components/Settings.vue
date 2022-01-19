@@ -1,18 +1,25 @@
 <template lang="pug">
 div
-  p Access to this page with requested token granted due to
+  p(v-if="expired") Token expired
+  p(v-if="ttl") Access to this page with requested token granted due to {{date()}}
   div(v-if="!group") Loading...
   div(v-if="group")
     form
-      p Greeting message&nbsp;
+      p Greeting message
+        |
+        |
         input(type="text" v-model="group.greeting")
-      p Ban timeout (minutes)&nbsp;
-        input(type="text" v-model="group.ban_timeout")
+      p Ban timeout (minutes)
+        |
+        |
+        input(type="number" v-model="group.ban_timeout")
       p URL Protection
         input(type="checkbox" v-model="group.ban_url")
       p Question protection
         input(type="checkbox" v-model="group.ban_question")
-      p Questions&nbsp;
+      p Questions
+        |
+        |
         input(type="button" value="Add new question" @click="addQuestion")
       div(v-for="question, index in group.questions" class="question")
         p Question
@@ -24,22 +31,43 @@ div
             | Correct
         input(type="button" value="Add new answer" @click="addAnswer(index)")
       br
-      input(type="submit" value="Save")
+      input(type="submit" value="Save" :disabled="blocked" @click="save")
+      p(v-if="saved") Saved
 
 </template>
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Group, Question, ServiceService, OpenAPI, Answer } from '@/api'
+import { Group, Question, ServiceService, Answer } from '@/api'
+import dayjs from 'dayjs'
 
 export default class Settings extends Vue {
   group: Group | null = null
+  ttl: string | null = null
+  expired: boolean | null = null
+  blocked = false
+  saved = false
+
+  date () : string {
+    return dayjs(this.ttl).format('DD.MM.YYYY HH:mm')
+  }
 
   mounted (): void {
-    OpenAPI.BASE = 'http://127.0.0.1:8080/api/v1'
+    const urlParams = new URLSearchParams(window.location.search)
+    const token = urlParams.get('token')
 
-    ServiceService.getGroup({ id: -1001117778815 }).then(group => {
+    if (token === null) {
+      return
+    }
+
+    ServiceService.getTokenData({ token }).then(data => {
+      this.ttl = data.ttl
+
+      return ServiceService.getGroup({ token })
+    }).then(group => {
       this.group = group
+    }).catch(() => {
+      this.expired = true
     })
   }
 
@@ -66,6 +94,29 @@ export default class Settings extends Vue {
     }
 
     this.group.questions[index].answers.push(answer)
+  }
+
+  save (e: Event): void {
+    e.preventDefault()
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const token = urlParams.get('token')
+
+    if (token === null) {
+      return
+    }
+
+    if (this.group === null) {
+      return
+    }
+
+    this.blocked = true
+
+    ServiceService.saveGroup({ token, requestBody: this.group }).then(() => {
+      this.saved = true
+    }).finally(() => {
+      this.blocked = false
+    })
   }
 }
 </script>

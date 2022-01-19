@@ -12,5 +12,6 @@ export type { Group } from './models/Group';
 export type { Healthcheck } from './models/Healthcheck';
 export type { Question } from './models/Question';
 export type { Questions } from './models/Questions';
+export type { TokenData } from './models/TokenData';
 
 export { ServiceService } from './services/ServiceService';
