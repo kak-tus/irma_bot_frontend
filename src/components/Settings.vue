@@ -21,15 +21,22 @@ div
         |
         |
         input(type="button" value="Add new question" @click="addQuestion")
-      div(v-for="question, index in group.questions" class="question")
+      div(v-for="question, questionIndex in group.questions" class="question")
+        input(type="button" value="Delete this question" @click="deleteQuestion(questionIndex)")
         p Question
+          |
+          |
           input(type="text" v-model="question.text")
-        div(v-for="answer in question.answers")
+        div(v-for="answer, answerIndex in question.answers")
           p Answer
+            |
+            |
             input(type="text" v-model="answer.text")
             input(type="checkbox" v-model="answer.correct")
             | Correct
-        input(type="button" value="Add new answer" @click="addAnswer(index)")
+            |
+            input(type="button" value="Delete answer" @click="deleteAnswer(questionIndex, answerIndex)")
+        input(type="button" value="Add new answer" @click="addAnswer(questionIndex)")
       br
       input(type="submit" value="Save" :disabled="blocked" @click="save")
       p(v-if="saved") Saved
@@ -84,6 +91,18 @@ export default class Settings extends Vue {
     this.group.questions.push(q)
   }
 
+  deleteQuestion (questionIndex: number): void {
+    if (this.group === null) {
+      return
+    }
+
+    if (this.group.questions[questionIndex] === undefined) {
+      return
+    }
+
+    this.group.questions.splice(questionIndex, 1)
+  }
+
   addAnswer (index: number): void {
     if (this.group === null) {
       return
@@ -94,6 +113,22 @@ export default class Settings extends Vue {
     }
 
     this.group.questions[index].answers.push(answer)
+  }
+
+  deleteAnswer (questionIndex: number, answerIndex: number): void {
+    if (this.group === null) {
+      return
+    }
+
+    if (this.group.questions[questionIndex] === undefined) {
+      return
+    }
+
+    if (this.group.questions[questionIndex].answers[answerIndex] === undefined) {
+      return
+    }
+
+    this.group.questions[questionIndex].answers.splice(answerIndex, 1)
   }
 
   save (e: Event): void {
