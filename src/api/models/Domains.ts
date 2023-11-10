@@ -3,6 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Question } from './Question';
+import type { Domain } from './Domain';
 
-export type Questions = Array<Question>;
+export type Domains = Array<Domain>;

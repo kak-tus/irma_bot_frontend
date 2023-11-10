@@ -45,7 +45,7 @@ div
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Group, Question, ServiceService, Answer } from '@/api'
+import { Group, Question, AuthService, Answer, GroupService } from '@/api'
 import dayjs from 'dayjs'
 
 export default class Settings extends Vue {
@@ -67,10 +67,10 @@ export default class Settings extends Vue {
       return
     }
 
-    ServiceService.getTokenData({ token }).then(data => {
+    AuthService.getTokenData({ token }).then(data => {
       this.ttl = data.ttl
 
-      return ServiceService.getGroup({ token })
+      return GroupService.getGroup({ token })
     }).then(group => {
       this.group = group
     }).catch(() => {
@@ -147,7 +147,7 @@ export default class Settings extends Vue {
 
     this.blocked = true
 
-    ServiceService.saveGroup({ token, requestBody: this.group }).then(() => {
+    GroupService.saveGroup({ token, requestBody: this.group }).then(() => {
       this.saved = true
     }).finally(() => {
       this.blocked = false
