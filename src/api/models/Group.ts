@@ -14,5 +14,6 @@ export type Group = {
     ban_timeout: number;
     questions: Questions;
     ignore_domains?: Domains;
+    ban_emojii_count?: number;
 };
 

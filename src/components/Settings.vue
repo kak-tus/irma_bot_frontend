@@ -37,6 +37,10 @@ div
             |
             input(type="button" value="Delete answer" @click="deleteAnswer(questionIndex, answerIndex)")
         input(type="button" value="Add new answer" @click="addAnswer(questionIndex)")
+      p Ban ALL (all users, not only newbies) for emojii (✅, 👍 and so on) (ban for emojii count in message: 0-10, 0=no ban)
+        |
+        |
+        input(type="number" v-model="group.ban_emojii_count")
       br
       input(type="submit" value="Save" :disabled="blocked" @click="save")
       p(v-if="saved") Saved

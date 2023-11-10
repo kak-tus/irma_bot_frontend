@@ -1,3 +1,6 @@
+2023-11-11 v0.1.3
+  - Support for set ban all users for emojii. This is temporary fix, because telegram does not send join chat messages.
+
 2023-08-26 v0.1.2
   - Disable nginx access logs.
 
