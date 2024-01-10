@@ -1,3 +1,6 @@
+2024-01-10 v0.1.4
+  - Temporary fix domain.
+
 2023-11-11 v0.1.5
   - Remove support for set ban all users for emojii. Not needed.
 
