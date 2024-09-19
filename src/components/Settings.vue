@@ -13,6 +13,10 @@ div
         |
         |
         input(type="number" v-model="group.ban_timeout")
+      p Ban for emoji count in message, greater or equal of this value
+        |
+        |
+        input(type="number" v-model="group.ban_emojii_count")
       p URL Protection
         input(type="checkbox" v-model="group.ban_url")
       p Question protection
@@ -37,6 +41,16 @@ div
             |
             input(type="button" value="Delete answer" @click="deleteAnswer(questionIndex, answerIndex)")
         input(type="button" value="Add new answer" @click="addAnswer(questionIndex)")
+      p Domains for ignore (i.e. github.com)
+      |
+      input(type="button" value="Add domain" @click="addDomain")
+      div(v-for="domain, idx in group.ignore_domains" class="question")
+        p
+          |
+          input(type="text" v-model="group.ignore_domains[idx]")
+          |
+          input(type="button" value="Delete" @click="deleteDomain(idx)")
+      br
       br
       input(type="submit" value="Save" :disabled="blocked" @click="save")
       p(v-if="saved") Saved
@@ -93,6 +107,18 @@ export default class Settings extends Vue {
     this.group.questions.push(q)
   }
 
+  addDomain (): void {
+    if (this.group === null) {
+      return
+    }
+
+    if (this.group.ignore_domains === undefined) {
+      this.group.ignore_domains = ['']
+    } else {
+      this.group.ignore_domains.push('')
+    }
+  }
+
   deleteQuestion (questionIndex: number): void {
     if (this.group === null) {
       return
@@ -133,6 +159,22 @@ export default class Settings extends Vue {
     this.group.questions[questionIndex].answers.splice(answerIndex, 1)
   }
 
+  deleteDomain (idx: number): void {
+    if (this.group === null) {
+      return
+    }
+
+    if (this.group.ignore_domains === undefined) {
+      return
+    }
+
+    if (this.group.ignore_domains[idx] === undefined) {
+      return
+    }
+
+    this.group.ignore_domains.splice(idx, 1)
+  }
+
   save (e: Event): void {
     e.preventDefault()
 
@@ -145,6 +187,10 @@ export default class Settings extends Vue {
 
     if (this.group === null) {
       return
+    }
+
+    if (this.group.ignore_domains !== undefined && this.group.ignore_domains.length === 0) {
+      this.group.ignore_domains = undefined
     }
 
     this.blocked = true

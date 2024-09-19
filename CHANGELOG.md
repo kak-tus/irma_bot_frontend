@@ -1,6 +1,7 @@
 2024-09-19 unreleased
   - Use fixed codegen version.
   - Support for confugurable from env API url.
+  - Support for set domain ignore and max emojii.
 
 2024-01-10 v0.1.6
   - Temporary fix domain.
