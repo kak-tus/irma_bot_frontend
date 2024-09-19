@@ -1,0 +1,1 @@
+window.FRONT_API_URL = '$FRONT_API_URL'

@@ -18,6 +18,7 @@ FROM nginx:1.19.6-alpine
 
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/default.conf /etc/nginx/conf.d/default.conf
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

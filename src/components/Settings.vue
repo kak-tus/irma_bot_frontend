@@ -45,7 +45,7 @@ div
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Group, Question, AuthService, Answer, GroupService } from '@/api'
+import { OpenAPI, Group, Question, AuthService, Answer, GroupService } from '@/api'
 import dayjs from 'dayjs'
 
 export default class Settings extends Vue {
@@ -60,6 +60,8 @@ export default class Settings extends Vue {
   }
 
   mounted (): void {
+    OpenAPI.BASE = window.FRONT_API_URL
+
     const urlParams = new URLSearchParams(window.location.search)
     const token = urlParams.get('token')
 
