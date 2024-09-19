@@ -44,6 +44,8 @@ div
       p Domains for ignore (i.e. github.com)
       |
       input(type="button" value="Add domain" @click="addDomain")
+      |
+      input(type="button" value="Add default domains list (github, pastebin and so on)" @click="addDefaultDomains")
       div(v-for="domain, idx in group.ignore_domains" class="question")
         p
           |
@@ -116,6 +118,26 @@ export default class Settings extends Vue {
       this.group.ignore_domains = ['']
     } else {
       this.group.ignore_domains.push('')
+    }
+  }
+
+  addDefaultDomains (): void {
+    if (this.group === null) {
+      return
+    }
+
+    const defaultDomains = [
+      'github.com',
+      'pastebin.com',
+      'habr.com',
+      'perlbanjo.com',
+      'metacpan.org'
+    ]
+
+    if (this.group.ignore_domains === undefined) {
+      this.group.ignore_domains = defaultDomains
+    } else {
+      this.group.ignore_domains.push(...defaultDomains)
     }
   }
 
