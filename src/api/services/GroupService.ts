@@ -3,13 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Group } from '../models/Group';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class GroupService {
-
     /**
      * Get group
      * @returns Group GetGroupResponse
@@ -32,7 +29,6 @@ export class GroupService {
             },
         });
     }
-
     /**
      * Save group
      * @returns any SaveGroupResponse
@@ -59,5 +55,4 @@ export class GroupService {
             },
         });
     }
-
 }

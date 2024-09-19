@@ -1,3 +1,6 @@
+2024-09-19 unreleased
+  - Use fixed codegen version.
+
 2024-01-10 v0.1.6
   - Temporary fix domain.
 
